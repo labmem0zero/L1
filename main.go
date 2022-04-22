@@ -12,7 +12,7 @@ func SolveProblem(f func(), probNumb int){
 }
 
 func main() {
-	/*SolveProblem(prob1, 1)
+	SolveProblem(prob1, 1)
 	SolveProblem(prob2, 2)
 	SolveProblem(prob3,3)
 	SolveProblem(prob6, 6)
@@ -36,5 +36,5 @@ func main() {
 	SolveProblem(prob24,24)
 	SolveProblem(prob25,25)
 	SolveProblem(prob26, 26)
-	*/
+
 }
