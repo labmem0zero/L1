@@ -2,21 +2,48 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
+//структура с мьютексом, показываю навык работы с конкурентной записью
+//результаты мог суммировать в одной горутине через канал
+type sum struct {
+	int
+	sync.Mutex
+}
+
 func prob3(){
+	var wg sync.WaitGroup
+	var res sum
 	a:=[]int{2,4,6,8,10}
-	resChan:=make(chan int)
-	sqr:=func(i int, c chan int) {
-		c<-i*i
-	}
-	for _,i:=range a{
-		go sqr(i,resChan)
-	}
-	sum:=0
-	for i:=0;i<5;i++{
-		val:=<-resChan
-		sum+=val
-	}
-	fmt.Printf("Сумма вадратов=%v\n",sum)
+	fmt.Println("Начальные данные:",a)
+	ch:=make(chan int)
+	//горутина отправляет данные в канал
+	go func(){
+		for _,i:=range a{
+			ch<-i*i
+		}
+		close(ch)
+	}()
+	wg.Add(2)
+	//первый воркер конкурентно читает данные с канала и прибавляет к результату
+	go func() {
+		for i:=range ch{
+			res.Lock()
+			res.int+=i
+			res.Unlock()
+		}
+		wg.Done()
+	}()
+	//второй воркер конкурентно читает данные с канала и прибавляет к результату
+	go func() {
+		for i:=range ch{
+			res.Lock()
+			res.int+=i
+			res.Unlock()
+		}
+		wg.Done()
+	}()
+	wg.Wait()
+	fmt.Println("Сумма квадратов:",res.int)
 }

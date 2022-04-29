@@ -7,11 +7,11 @@ import (
 
 func ReverseStringWords(input string)string{
 	tmp:=strings.Split(input," ")
-	var res []string
-	for _,s:=range tmp{
-		res=append([]string{s},res...)
+	//идентично предидущему заданию
+	for i:=0;i<len(tmp)/2;i++{
+		tmp[i],tmp[len(tmp)-i-1]=tmp[len(tmp)-i-1],tmp[i]
 	}
-	return strings.Join(res," ")
+	return strings.Join(tmp," ")
 }
 
 func prob20(){

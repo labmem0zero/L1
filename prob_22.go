@@ -6,6 +6,7 @@ import (
 )
 
 func prob22(){
+	//создаем два больших числа и работаеим с ними при помощи встроенного пакета math/big
 	a:=big.NewFloat(2<<21)
 	b:=big.NewFloat(2<<21+5)
 	res:=big.NewFloat(0)

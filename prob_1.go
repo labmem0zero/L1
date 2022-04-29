@@ -17,6 +17,7 @@ func (h Human) ReturnParams() string {
 }
 
 type Action struct {
+	//при указании структуры A как часть структуры B, мы получваем доступ к полям и методам структуры A из структуры B
 	Human
 }
 

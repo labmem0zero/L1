@@ -36,5 +36,4 @@ func main() {
 	SolveProblem(prob24,24)
 	SolveProblem(prob25,25)
 	SolveProblem(prob26, 26)
-
 }

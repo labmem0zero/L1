@@ -10,6 +10,7 @@ import (
 func prob6(){
 	var wg sync.WaitGroup
 	stopChan:=make(chan int)
+	//остановка при помощи сигнального канала
 	wg.Add(1)
 	go func(stop <-chan int){
 		for{
@@ -28,6 +29,10 @@ func prob6(){
 	close(stopChan)
 
 	//Остановка при помощи cancel() функции контекста
+	//по сути используется все тот же сигнальный канал
+	//но у нас есть контекст, который может использоваться для различных целей
+	//например для хранения данных о результатах выполнения функции
+	//(например, хэш карта, реализованная в пакете 'gorilla/ctx')
 	wg.Add(1)
 	ctx,cancel:=context.WithCancel(context.Background())
 	go func(ctx context.Context){

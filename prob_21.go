@@ -7,19 +7,21 @@ import (
 	"time"
 )
 
+//сервер с биг датой
+type server struct {
+	bigData []byte
+}
+//интерфейс с методом получения данных
 type OperationalSystem interface {
 	ReceiveJSON([]byte)
 }
 
-type server struct {
-	bigData []byte
-}
-
+//метод для отправки данных выбранной "OS"
 func (s *server)SendData(os OperationalSystem){
 	os.ReceiveJSON(s.bigData)
 }
 
-
+//формат структуры данных, получаемых "Windows"
 type Windows struct {
 	BigData struct{
 		Id int	`json:"id"`
@@ -28,11 +30,13 @@ type Windows struct {
 	}
 }
 
+//Метод получения данных "Windows"
 func (w *Windows)ReceiveJSON(data []byte){
 	fmt.Println("PC получил JSON")
 	json.Unmarshal(data, &w.BigData)
 }
 
+//формат структуры данных, получаемых "Android"
 type Android struct {
 	DickData struct{
 		Id int	`xml:"id"`
@@ -41,15 +45,19 @@ type Android struct {
 	}
 }
 
+//Метод получения данных "Android"
 func (a *Android) ReceiveXML(data []byte){
 	fmt.Println("Android получил XML")
 	xml.Unmarshal(data,&a.DickData)
 }
 
+//Структура для нашего адаптера
 type androidPCAdapter struct {
 	androidPC *Android
 }
 
+//Адаптер: олучаем данные методом "ReceiveJSON", не прописанным для структуры "Android"
+//на практике конкретно такой вариант мы вряд ли увидим, но на бумаги вот он, АДАПТЕР
 func (apA *androidPCAdapter)ReceiveJSON(data []byte){
 	fmt.Println("Адаптер получил JSON, адаптируем для Android")
 	var tmp testStruct
